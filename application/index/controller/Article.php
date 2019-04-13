@@ -10,6 +10,7 @@ class Article extends Base
     public function index(Request $request)
     {
         $id = $request::param('id');
+        $title = $request::param('title');
         if(empty($id)) abort(404,'页面异常');
         return $this->fetch();
     }

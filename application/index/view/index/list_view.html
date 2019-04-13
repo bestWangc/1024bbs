@@ -37,7 +37,7 @@ $(function () {
             title:"文章",
             halign:"center",
             formatter: function (value, row, index) {
-                return '<a href="/index/article/index?id='+row.id+'" class="text-muted">'+value+'</a>';
+                return '<a href="/index/article/index?id='+row.id+'&title='+value+'" class="text-muted">'+value+'</a>';
             }
         }, {
             field:"author",
