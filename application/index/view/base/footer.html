@@ -1,12 +1,27 @@
-<footer class="fixed-bottom">
+<footer style="margin-top: 3rem;">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <p style="text-align: center; font-size: .8rem">
-                    当前时间：2019-4-13 10:06 ||
+                    当前时间：<span id="showDate"></span> ||
                     <script type="text/javascript" src="https://s96.cnzz.com/z_stat.php?id=1277107904&web_id=1277107904"></script>
                 </p>
             </div>
         </div>
     </div>
 </footer>
+<script>
+    $(function(){
+        setInterval("getTime();",1000); //每隔一秒运行一次
+    })
+    //取得系统当前时间
+    function getTime(){
+        let myDate = new Date();
+        let date = myDate.toLocaleDateString();
+        let hours = myDate.getHours();
+        let minutes = myDate.getMinutes();
+        let seconds = myDate.getSeconds();
+        let res = date+" "+hours+":"+minutes+":"+seconds;
+        $("#showDate").html(res);
+    }
+</script>
