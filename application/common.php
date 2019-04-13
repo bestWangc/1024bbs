@@ -10,3 +10,18 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+/**
+ * josn 返回函数
+ * @param int $code
+ * @param $msg
+ * @param array $data
+ * @return \think\response\Json
+ */
+function jsonRes($code, $msg, $data = []){
+    $data = [
+        'code' => $code,
+        'msg' => $msg,
+        'data' => $data
+    ];
+    return json($data);
+}

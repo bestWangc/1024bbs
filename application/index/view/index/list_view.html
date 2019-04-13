@@ -1,12 +1,18 @@
 {extend name="base/base" /}
 
-{block name="title"}1024纯净版{/block}
+{block name="title"}1024纯净版-{$title}{/block}
 
 {block name="main"}
 {include file="base/header"}
 <div class="container">
     <div class="d-flex p-2 bg-light">
-        <div class="p-2 text-muted">亞洲無碼原創區</div>
+        <div class="p-2 text-muted">{$title}</div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table id="list_views"  data-mobile-responsive="true"  data-pagination="true">
+            </table>
+        </div>
     </div>
 </div>
 
@@ -14,6 +20,45 @@
 
 {block name="my-js"}
 <script>
+$(function () {
+    $('#list_views').bootstrapTable({
+        url:"/index/article/getArticle",
+        method: 'get',
+        sidePagination: "server",
+        queryParams: queryParams,
+        mobileResponsive: true,
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 20,
+        pageList: [20, 35, 50],
+        paginationShowPageGo: true,
+        columns: [{
+            field:"title",
+            title:"文章",
+            halign:"center",
+            formatter: function (value, row, index) {
+                return '<a href="/index/article/index?id='+row.id+'" class="text-muted">'+value+'</a>';
+            }
+        }, {
+            field:"author",
+            title:"作者",
+            align:"center",
+        }, {
+            field:"create_time",
+            title:"發表",
+            align:"center",
+        }]
+    });
 
+    // 得到查询的参数
+    function queryParams(params) {
+        var temp = {
+            limit : params.limit, // 每页显示数量
+            offset : params.offset, // SQL语句起始索引
+            page: (params.offset / params.limit) + 1, //当前页码
+        };
+        return temp;
+    };
+});
 </script>
 {/block}

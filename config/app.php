@@ -137,10 +137,15 @@ return [
     'exception_tmpl'         => Env::get('think_path') . 'tpl/think_exception.tpl',
 
     // 错误显示信息,非调试模式有效
-    'error_message'          => '页面错误！请稍后再试～',
+    'error_message'          => '页面错误！',
     // 显示错误信息
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
+
+    'http_exception_template'    => [
+        404 =>  Env::get('app_path') . 'index/view/exception_html/404.html',
+        500 =>  Env::get('app_path') . 'index/view/exception_html/500.html',
+    ],
 
 ];

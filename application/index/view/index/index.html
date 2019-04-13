@@ -21,73 +21,21 @@
         <div class="p-2 bg-primary">|</div>
         <div class="p-2 bg-warning flex-grow-1"></div>
     </div>
+    {volist name="blockInfo" id="vos"}
     <div class="row" style="margin-top: 2rem;">
+        {volist name="vos" id="vo"}
         <div class="col-lg-3 col-md-3 col-sm-6">
             <div class="card card-height">
                 <div class="card-body">
-                    <h5 class="card-title">亞洲無碼原創區</h5>
-                    <p class="card-text">發布亞洲最新無修正資訊片，亞洲無碼大聯盟</p>
-                    <a href="{:url('/index/index/listView')}" class="btn btn-outline-primary float-right">進入</a>
+                    <h5 class="card-title">{$vo.title}</h5>
+                    <p class="card-text">{$vo.introduce}</p>
+                    <a href="/index/index/listView?type={$vo.id}" class="btn btn-outline-primary float-right">進入</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">亞洲有碼原創區</h5>
-                    <p class="card-text">發布亞洲最新有修正資訊片</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">中字原創區</h5>
-                    <p class="card-text">發布各類中文字幕成人資訊片</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">歐美原創區</h5>
-                    <p class="card-text">發布純正的歐美成人資訊片</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
+        {/volist}
     </div>
-    <div class="row" style="margin-top: 2rem;">
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">國產原創區</h5>
-                    <p class="card-text">發布純正的國產成人，三級資訊片</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">動漫原創區</h5>
-                    <p class="card-text">發布任何H動畫漫畫</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6">
-            <div class="card card-height">
-                <div class="card-body">
-                    <h5 class="card-title">成人文學交流區</h5>
-                    <p class="card-text">發布成人文章小說</p>
-                    <a href="#" class="btn btn-outline-primary float-right">進入</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {/volist}
 </div>
 
 {include file="base/footer"}{/block}
