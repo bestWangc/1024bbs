@@ -21,89 +21,19 @@ class Article extends Base
      */
     public static function getArticle(Request $request)
     {
-        $total = 70;
-        $data = [
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-            [
-                "title"=>'最新國產の精品合集ⓐ[04.13]',
-                "author"=>"admin",
-                "create_time"=>"2019-04-13 21:20",
-                "id" =>1
-            ],
-        ];
+        $type = $request::param('type',3);
+        $page = $request::param('page',1);
+        $limit = $request::param('limit',30);
+        $list = Db::name('article')
+            ->field('id,title,create_time')
+            ->where('block_id',$type)
+            ->paginate($limit,false,[
+                'page' => $page
+            ]);
+        $total = $list->total();
+        $list = $list->all();
         $info = [
-            "rows" => $data, //存放的是后台返回的数据
+            "rows" => $list, //存放的是后台返回的数据
             "total" => $total //存放的是总的数据条数
         ];
 
