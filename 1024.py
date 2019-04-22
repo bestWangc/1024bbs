@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 
 def die():
     sys.exit()
@@ -24,7 +25,11 @@ db = pymysql.connect("localhost","root","root","pure");
 
 cursor = db.cursor()
 
-browser = webdriver.Chrome()#声明驱动对象
+chrome_options = Options()
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--headless')
+browser = webdriver.Chrome(chrome_options=chrome_options)#声明驱动对象
 try:
 
     right_url = 'http://%77%77%31%2E%64%7A%78%61%2E%6D%65/bbs.php'
