@@ -6,6 +6,10 @@ use think\facade\Request;
 
 class Kalman extends Base
 {
+    public function index()
+    {
+        return $this->fetch();
+    }
 
     public function checkKalman(Request $request)
     {
