@@ -9,15 +9,22 @@ class Torrent extends Base
 {
     public function detail(Request $request)
     {
-        $articleId = $request::param('id');
-        $type = $request::param('type');
+        $articleId = $request::post('id');
+        $type = $request::post('type');
+        $kalman = $request::post('text');
         if(is_null($type)) abort(404,'页面异常');
 
-        $isLogin = $this->checkLogin();
-        if(!$isLogin) return jsonRes(1,'未登录');
+        $isLogin = $this->checkLogin(); //判断是否登录
+        $checkKalman = Kalman::check($kalman);
 
-        $vipDayLine = Session::get('user_vip');
-        if($vipDayLine == 0) return jsonRes(102,'vip 时间已过，请重新获取卡密');
+        if(!$isLogin && !$checkKalman){
+            return jsonRes(1,'未登录或者卡密不可用');
+        }
+
+        if(empty($kalman)){
+            $vipDayLine = Session::get('user_vip');
+            if($vipDayLine == 0) return jsonRes(102,'vip 时间已过，请重新获取卡密');
+        }
 
         $info = Db::name('torrent')
             ->where('article_id',$articleId)

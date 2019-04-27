@@ -29,6 +29,14 @@
             let type = $(this).data('val');
             let id = $('#articleId').val();
             let addressDom = $(this);
+            getUrl(id,type,addressDom);
+            console.log(type);
+        });
+
+        var getUrl = function (id,type,addressDom,text) {
+            if(text == undefined){
+                text = '';
+            }
             $.ajax({
                 url : '/index/torrent/detail',
                 type : "POST",
@@ -36,25 +44,30 @@
                 cache : false,
                 data : {
                     type : type,
-                    id : id
+                    id : id,
+                    text:text
                 },
                 success : function(res){
-                    console.log(res);
                     if(res.code == 0){
                         addressDom.after(' -> <a href="'+res.data+'" class="btn btn-danger">磁力連結</a>');
                     }else if(res.code == 1){
-                        layer.prompt({title: '输入卡密或者登录后下载', formType: 1}, function(pass, index){
-                            layer.close(index);
+                        layer.prompt({title: '输入卡密或者登录后获取', formType: 1}, function(pass, index){
                             $.ajax({
-                                url : '/index/torrent/checkKalman',
+                                url : '/index/kalman/checkKalman',
                                 type : "POST",
                                 dataType : "json",
                                 cache : false,
                                 data : {
-                                    test : pass
+                                    text : pass
                                 },
                                 success : function(resq){
                                     console.log(resq);
+                                    if(resq.code == 0){
+                                        getUrl(id,type,addressDom,pass);
+                                        layer.close(index);
+                                    }else{
+                                        layer.msg(resq.msg,{time: 1500});
+                                    }
                                 },
                                 error : function(data){
                                     console.log(data);
@@ -69,8 +82,7 @@
                     console.log(data);
                 }
             });
-            console.log(type);
-        });
+        };
     });
 </script>
 {/block}
