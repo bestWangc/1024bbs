@@ -19,7 +19,8 @@ class Index extends Base
         $type = $request::param('type',1);
         $title = Block::getFieldByID($type,'title');
         $this->assign([
-            'title' => $title
+            'title' => $title,
+            'type' => $type
         ]);
         return $this->fetch();
     }

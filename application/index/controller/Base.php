@@ -16,10 +16,13 @@ class Base extends Controller
         self::$userInfo = $this->getUserInfo(self::$uid);*/
     }
 
-    /*public function checkLogin(){
+    public function checkLogin(){
         //seeion没有user_id 重新登录
-        if(!session('u_id')) $this->redirect('/index/login');
-    }*/
+        if(!session('u_id')){
+            return false;
+        };
+        return true;
+    }
 
     public function getUserInfo($uid)
     {

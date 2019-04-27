@@ -99,7 +99,7 @@ try:
                     y['href'] = 'javascript:;'
                     y['class'] = 'address'
                     y['data-val'] = count
-                    y.string = '磁力連結'
+                    y.string = '点击获取'
                     count += 1
                 else:
                     y['href'] = 'javascript:;'
@@ -108,13 +108,14 @@ try:
             url_arr = json.dumps(url_arr,ensure_ascii=False)
 
             try:
-                sql = 'INSERT INTO pp_article (user_id,title,content,block_id) VALUES(1,%s,%s,%s)'
-                val = (title_text,current_cont,fid)
+                all_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+                sql = 'INSERT INTO pp_article (user_id,title,content,block_id,create_time) VALUES(1,%s,%s,%s,%s)'
+                val = (title_text,current_cont,fid,all_time)
                 cursor.execute(sql, val)
                 last_insert_id = cursor.lastrowid
                 if last_insert_id:
-                    sql = 'INSERT INTO pp_torrent (article_id,content) VALUES(%s,%s)'
-                    val = (last_insert_id,url_arr)
+                    sql = 'INSERT INTO pp_torrent (article_id,content,create_time) VALUES(%s,%s,%s)'
+                    val = (last_insert_id,url_arr,all_time)
                     cursor.execute(sql, val)
 
                 # 提交到数据库执行

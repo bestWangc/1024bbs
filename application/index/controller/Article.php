@@ -10,8 +10,14 @@ class Article extends Base
     public function index(Request $request)
     {
         $id = $request::param('id');
-        $title = $request::param('title');
         if(empty($id)) abort(404,'页面异常');
+
+        $info = $this->detail($id);
+        $this->assign([
+            'id' => $id,
+            'title' => $info['title'],
+            'info' => $info['content']
+        ]);
         return $this->fetch();
     }
 
@@ -19,7 +25,7 @@ class Article extends Base
      * @param Request $request
      * @return mixed
      */
-    public static function getArticle(Request $request)
+    public static function getArticleList(Request $request)
     {
         $type = $request::param('type',3);
         $page = $request::param('page',1);
@@ -27,6 +33,7 @@ class Article extends Base
         $list = Db::name('article')
             ->field('id,title,create_time')
             ->where('block_id',$type)
+            ->order('create_time desc')
             ->paginate($limit,false,[
                 'page' => $page
             ]);
@@ -38,5 +45,14 @@ class Article extends Base
         ];
 
         return json($info);
+    }
+
+    public function detail($id)
+    {
+        $info = Db::name('article')
+            ->field('id,title,content')
+            ->where('id',$id)
+            ->find();
+        return $info;
     }
 }

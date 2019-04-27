@@ -26,8 +26,7 @@ class Block extends Base
      */
     public static function getAllField()
     {
-        $info = Db::name('block')
-            ->select();
+        $info = Db::name('block')->select();
         return $info;
     }
 }

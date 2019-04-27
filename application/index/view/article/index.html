@@ -4,9 +4,19 @@
 
 {block name="main"}
 {include file="base/header"}
+<style>
+
+</style>
 <div class="container">
-<br/>
-    213212313
+    <div class="d-flex p-2 bg-light">
+        <div class="p-2 text-muted">{$title}</div>
+        <input type="hidden" id="articleId" value="{$id}">
+    </div>
+    <div class="row">
+        <div class="col">
+            {$info|raw}
+        </div>
+    </div>
 </div>
 
 {include file="base/footer"}
@@ -14,6 +24,53 @@
 
 {block name="my-js"}
 <script>
-
+    $(function () {
+        $('.address').click(function () {
+            let type = $(this).data('val');
+            let id = $('#articleId').val();
+            let addressDom = $(this);
+            $.ajax({
+                url : '/index/torrent/detail',
+                type : "POST",
+                dataType : "json",
+                cache : false,
+                data : {
+                    type : type,
+                    id : id
+                },
+                success : function(res){
+                    console.log(res);
+                    if(res.code == 0){
+                        addressDom.after(' -> <a href="'+res.data+'" class="btn btn-danger">磁力連結</a>');
+                    }else if(res.code == 1){
+                        layer.prompt({title: '输入卡密或者登录后下载', formType: 1}, function(pass, index){
+                            layer.close(index);
+                            $.ajax({
+                                url : '/index/torrent/checkKalman',
+                                type : "POST",
+                                dataType : "json",
+                                cache : false,
+                                data : {
+                                    test : pass
+                                },
+                                success : function(resq){
+                                    console.log(resq);
+                                },
+                                error : function(data){
+                                    console.log(data);
+                                }
+                            });
+                        });
+                    }else{
+                        layer.msg(res.msg,{time: 1500});
+                    }
+                },
+                error : function(data){
+                    console.log(data);
+                }
+            });
+            console.log(type);
+        });
+    });
 </script>
 {/block}

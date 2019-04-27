@@ -7,6 +7,7 @@
 <div class="container">
     <div class="d-flex p-2 bg-light">
         <div class="p-2 text-muted">{$title}</div>
+        <input type="hidden" id="type" value="{$type}">
     </div>
     <div class="row">
         <div class="col">
@@ -22,7 +23,7 @@
 <script>
 $(function () {
     $('#list_views').bootstrapTable({
-        url:"/index/article/getArticle",
+        url:"/index/article/getArticleList",
         method: 'get',
         sidePagination: "server",
         queryParams: queryParams,
@@ -37,7 +38,7 @@ $(function () {
             title:"文章",
             halign:"center",
             formatter: function (value, row, index) {
-                return '<a href="/index/article/index?id='+row.id+'&title='+value+'" class="text-muted">'+value+'</a>';
+                return '<a href="/index/article/index?id='+row.id+'" class="text-muted">'+value+'</a>';
             }
         }, {
             field:"author",
@@ -53,6 +54,7 @@ $(function () {
     // 得到查询的参数
     function queryParams(params) {
         var temp = {
+            type : $('#type').val(),
             limit : params.limit, // 每页显示数量
             offset : params.offset, // SQL语句起始索引
             page: (params.offset / params.limit) + 1, //当前页码
