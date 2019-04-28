@@ -33,16 +33,14 @@ chrome_options.add_argument('blink-settings=imagesEnabled=false')
 chrome_options.add_argument('--disable-gpu')
 browser = webdriver.Chrome(chrome_options=chrome_options)#声明驱动对象
 try:
-
     right_url = 'http://%77%77%31%2E%64%7A%78%61%2E%6D%65/bbs.php'
-    # tmp_url = 'http://w3.csjbzcjnr.pw/pw/thread.php?fid=3'
     browser.get(right_url)#发送get请求
     tmp_url = browser.current_url +'thread.php?fid=' + fid
     time.sleep(2)
     browser.get(tmp_url)
     # List = browser.find_elements_by_xpath("//h3/a[@target='_blank']")
     List = browser.find_elements_by_xpath("//h3/a")
-    wait = WebDriverWait(browser,10)#等待元素加载出来
+    wait = WebDriverWait(browser,20)#等待元素加载出来
 
     current_time = time.strftime('%m.%d', time.localtime())
     for x in List:
@@ -50,22 +48,6 @@ try:
         res = title_text.find(current_time)
 
         if res >= 0:
-            # block_id = 0
-            # if title_text.find('國產') >= 0 or title_text.find('国产') >= 0:
-            #     block_id = 5
-            # elif title_text.find('欧美') >= 0:
-            #     block_id = 4
-            # elif title_text.find('亚洲') >= 0 and title_text.find('无码') >= 0:
-            #     block_id = 1
-            # elif title_text.find('亚洲') >= 0 and title_text.find('有码') >= 0:
-            #     block_id = 2
-            # elif title_text.find('动漫') >= 0 or title_text.find('卡通') >= 0:
-            #     block_id = 6
-            # else:
-            #     block_id = 8
-
-            # if block_id == 0: continue
-
             #查询是否存在该title
             cursor.execute("SELECT title FROM pp_article")
             title_result = cursor.fetchall()     # fetchall() 获取所有记录
@@ -79,7 +61,7 @@ try:
 
             time.sleep(1)
             browser.get(x.get_attribute('href'))
-            wait = WebDriverWait(browser,10)
+            wait = WebDriverWait(browser,20)
             data = browser.find_element_by_id('read_tpc')
             source_html = browser.page_source
             soup = bs(source_html,'lxml')
@@ -92,7 +74,7 @@ try:
                 href_str = y.get('href')
                 if href_str.find('torrent') >= 0:
                     browser.get(href_str)
-                    wait = WebDriverWait(browser,10)
+                    wait = WebDriverWait(browser,20)
                     browser.find_element_by_class_name('dlboxbg')
                     time.sleep(1)
                     torrent_html = bs(browser.page_source,'lxml')
