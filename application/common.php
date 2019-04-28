@@ -25,3 +25,23 @@ function jsonRes($code, $msg, $data = []){
     ];
     return json($data);
 }
+
+function getKalman()
+{
+    $numLen = $pwdLen = 16;
+    $sNumArr = range(0,20);
+    $sPwdArr = array_merge($sNumArr,range('A','Z'));
+
+    $tempNumStr = [];
+    for($i=0; $i< $numLen; $i++){
+        $tempNumStr[] = array_rand($sNumArr);
+    }
+    $tempPwdStr = [];
+    for($i=0; $i< $pwdLen; $i++){
+        $tempPwdStr[] = $sPwdArr[array_rand($sPwdArr)];
+    }
+    $cards = implode('',$tempNumStr) .implode('',$tempPwdStr);
+
+    $cards = md5($cards);
+    return $cards;
+}

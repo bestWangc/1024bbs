@@ -1,6 +1,6 @@
 {extend name="base/base" /}
 
-{block name="title"}1024纯净版-登录{/block}
+{block name="title"}1024纯净版-卡密{/block}
 
 {block name="main"}
 {include file="base/header"}
@@ -9,7 +9,7 @@
         <div class="p-2 text-muted">获取卡密</div>
     </div>
     <div class="row">
-        <div class="col-6 text-center offset-3">
+        <div class="col-6 text-center border-right">
             <form onsubmit="return false;">
                 <div class="form-group">
                     <label for="sel1">卡密列表:</label>
@@ -28,10 +28,35 @@
                     <input type="text" class="form-control" id="sel2" value="1">
                 </div>
                 <div class="form-group">
-                    <label for="sel3">价格:</label>
+                    <label for="sel3">价格/元:</label>
                     <input type="text" class="form-control" id="sel3" value="" disabled>
                 </div>
+                <div class="form-group">
+                    <label for="sel4">查询密码:</label>
+                    <input type="text" class="form-control" id="sel4" placeholder="查询密码是您获取卡密的唯一途径">
+                </div>
+                <div class="form-group">
+                    <label for="sel6">支付方式:</label>
+                    <select class="form-control" id="sel6">
+                        <option value="">请选择支付方式</option>
+                        <option value="1">支付宝</option>
+                        <option value="2">微信</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary submitBtn">确认购买</button>
+            </form>
+        </div>
+        <div class="col-6 text-center ">
+            <form onsubmit="return false;">
+                <div class="form-group">
+                    <label for="queryPwd">输入查询密码查询卡密:</label>
+                    <input type="text" class="form-control" id="queryPwd" >
+                </div>
+                <div class="form-group">
+                    <label for="sel5">卡密:</label>
+                    <p type="text" id="sel5" ></p>
+                </div>
+                <button type="submit" class="btn btn-primary submitBtn">查询</button>
             </form>
         </div>
     </div>
@@ -43,55 +68,113 @@
 {block name="my-js"}
 <script>
     $(function () {
+        $("#sel4").keydown(function(){
+            this.value = this.value.replace(/[^A-Za-z0-9]/i,'');
+        });
         $('#sel1').change(function () {
-
+            let num = $('#sel2').val();
+            let type = $(this).val();
+            if(num == ''){
+                layer.msg('数量不能为空',{time: 1000});
+                return false;
+            }
+            if(type == ''){
+                layer.msg('请选择卡密种类',{time: 1000});
+                return false;
+            }
+            getPrice(type,num);
         });
+
         $('.submitBtn').click(function () {
-            let type = $(this).data('val');
-            let id = $('#articleId').val();
-            let addressDom = $(this);
-            getUrl(id,type,addressDom);
-            console.log(type);
+            let num = $('#sel2').val();
+            let type = $(this).val();
+            let queryPwd = $('#sel4');
+            let way = $('#sel6');
+            if(num == ''){
+                layer.msg('数量不能为空',{time: 1000});
+                return false;
+            }
+            if(type == ''){
+                layer.msg('请选择卡密种类',{time: 1000});
+                return false;
+            }
+            if(queryPwd == ''){
+                layer.msg('请输入查询密码',{time: 1000});
+                return false;
+            }
+            if(way == ''){
+                layer.msg('请选择支付方式',{time: 1000});
+                return false;
+            }
+            layer.load(0, {
+                shade: [0.1,'#fff']
+            });
+            $.ajax({
+                url : '/index/order/createOrder',
+                type : "POST",
+                dataType : "json",
+                cache : false,
+                data : {
+                    num : num,
+                    type : type,
+                    way : way,
+                    queryPwd : queryPwd
+                },
+                success : function(res){
+                    layer.closeAll('loading');
+                    console.log(res);
+                    return false;
+                    if(res.code == 0){
+                        console.log(res.data.url);
+                        //判断是不是web 网站访问
+                        let isWeb = checkAgents();
+                        if(isWeb){
+                            $('#rechargeImg').html('');
+                            $('#rechargeImg').qrcode({
+                                width: 190,
+                                height:190,
+                                text:res.data.url
+                            });
+                            let title = '';
+                            if(res.data.way){
+                                title = '打开支付宝扫一扫';
+                            }else{
+                                title = '打开微信扫一扫';
+                            }
+                            layer.open({
+                                type: 1,
+                                title:title,
+                                area: ['40rem', '25rem'], //宽高
+                                content: $('.rechargeModal')
+                            });
+                        }else{
+                            let activeA = $('<a href="'+res.data.url+'"></a>');
+                            activeA[0].click();
+                        }
+                    }else{
+                        layer.msg(res.msg,{time: 1500});
+                    }
+                },
+                error : function(data){
+                    console.log(data);
+                }
+            });
         });
 
-        var getUrl = function (id,type,addressDom) {
+        var getPrice = function (type,num) {
             $.ajax({
-                url : '/index/torrent/detail',
+                url : '/index/kalman/getPrice',
                 type : "POST",
                 dataType : "json",
                 cache : false,
                 data : {
                     type : type,
-                    id : id,
-                    text:text
+                    num : num
                 },
                 success : function(res){
+                    console.log(res);
                     if(res.code == 0){
-                        addressDom.after(' -> <a href="'+res.data+'" class="btn btn-danger">磁力連結</a>');
-                    }else if(res.code == 1){
-                        layer.prompt({title: '输入卡密或者登录后获取', formType: 1}, function(pass, index){
-                            $.ajax({
-                                url : '/index/kalman/checkKalman',
-                                type : "POST",
-                                dataType : "json",
-                                cache : false,
-                                data : {
-                                    text : pass
-                                },
-                                success : function(resq){
-                                    console.log(resq);
-                                    if(resq.code == 0){
-                                        getUrl(id,type,addressDom,pass);
-                                        layer.close(index);
-                                    }else{
-                                        layer.msg(resq.msg,{time: 1500});
-                                    }
-                                },
-                                error : function(data){
-                                    console.log(data);
-                                }
-                            });
-                        });
+                        $('#sel3').val(res.data);
                     }else{
                         layer.msg(res.msg,{time: 1500});
                     }
