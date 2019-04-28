@@ -87,6 +87,7 @@ try:
                     count += 1
                 else:
                     y['href'] = 'javascript:;'
+                    y.string = '未能获取地址'
 
             current_cont = str(current_cont)
             url_arr = json.dumps(url_arr,ensure_ascii=False)
