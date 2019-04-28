@@ -80,7 +80,7 @@ try:
             wait = WebDriverWait(browser,10)
             data = browser.find_element_by_id('read_tpc')
             source_html = browser.page_source
-            soup = bs(source_html)
+            soup = bs(source_html,'lxml')
             current_cont = soup.find('div', id='read_tpc')
 
             alink = current_cont.findAll('a')
