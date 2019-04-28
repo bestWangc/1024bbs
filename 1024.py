@@ -93,7 +93,7 @@ try:
                     wait = WebDriverWait(browser,10)
                     browser.find_element_by_class_name('dlboxbg')
                     time.sleep(1)
-                    torrent_html = bs(browser.page_source)
+                    torrent_html = bs(browser.page_source,'lxml')
                     parent_box = torrent_html.find('div','dlboxbg')
                     url_arr.append(parent_box.find('a').get('href'))
                     y['href'] = 'javascript:;'
