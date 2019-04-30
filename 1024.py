@@ -4,6 +4,7 @@ import codecs
 import json
 import pymysql
 import traceback
+import lxml
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -87,6 +88,7 @@ try:
                     count += 1
                 else:
                     y['href'] = 'javascript:;'
+                    y.string = '未能获取地址'
 
             current_cont = str(current_cont)
             url_arr = json.dumps(url_arr,ensure_ascii=False)
