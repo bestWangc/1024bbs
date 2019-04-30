@@ -35,4 +35,18 @@ class Kalman extends Base
         }
         return false;
     }
+
+    public function getPrice(Request $request)
+    {
+        $type = $request::post('type/d');
+        $num = $request::post('num/d');
+        if(empty($type) || empty($num)){
+            return jsonRes(1,'参数不足');
+        }
+        $price = Db::name('price')
+            ->where('id',$type)
+            ->value('price');
+        $total = $price * $num;
+        return jsonRes(0,'success',$total);
+    }
 }
