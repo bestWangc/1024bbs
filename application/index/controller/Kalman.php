@@ -30,8 +30,14 @@ class Kalman extends Base
             ->where('kalman',$text)
             ->where('status',1)
             ->value('day');
-        if((int)$info != 0){
-            return true;
+        if(!empty($info)){
+            if($info > 0 ){
+                if($info > time()){
+                    return true;
+                }
+            }else{
+                return true;
+            }
         }
         return false;
     }
@@ -92,15 +98,8 @@ class Kalman extends Base
         $day = Db::name('kalman')
             ->where('kalman',$kalman)
             ->value('day');
-
-        if($day > 0){
-            $endTimeStr = '+'.$day.' day';
-            $endTime = strtotime($endTimeStr);
-        }else{
-            $endTime = -1;
-        }
         $data = [
-            'vip_dayline' => $endTime
+            'vip_dayline' => $day
         ];
         Db::startTrans();
         try {

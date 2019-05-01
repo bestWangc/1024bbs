@@ -24,6 +24,13 @@ class Order extends Base
         }
         $price = Db::name('price')->where('id',$type)->value('price');
         $time = Db::name('price')->where('id',$type)->value('time');
+        $endTime = 0;
+        if($time > 0){
+            $endTimeStr = '+'.$time.' day';
+            $endTime = strtotime($endTimeStr);
+        }else{
+            $endTime = -1;
+        }
         $money = $num*$price;
         //流水编号
         $orderNum = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
@@ -44,7 +51,7 @@ class Order extends Base
                 $kalman = getKalman();
                 $data = [
                     'kalman' => $kalman,
-                    'day' => $time,
+                    'day' => $endTime,
                     'status' => 0,
                     'query_pwd' => $queryPwd,
                     'order_no' => $orderNum,
