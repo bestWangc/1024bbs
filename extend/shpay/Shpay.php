@@ -24,8 +24,8 @@ class Shpay extends Controller
     protected function initialize()
     {
         /* 消息通知地址 */
-        self::$conf['backUrl'] = "http://{$_SERVER['HTTP_HOST']}/service/pay/payBack";
-        self::$conf['frontUrl'] = "http://{$_SERVER['HTTP_HOST']}/service/pay/payFront";;
+        self::$conf['backUrl'] = "http://{$_SERVER['HTTP_HOST']}/index/pay/payBack";
+        self::$conf['frontUrl'] = "http://{$_SERVER['HTTP_HOST']}/index/pay/payFront";;
     }
 
     /**

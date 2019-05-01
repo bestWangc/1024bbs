@@ -31,7 +31,7 @@ class Pay extends Base
                         try {
                             $uData = [
                                 'status' => 1,
-                                'updated_date' => time(),
+                                'updated_time' => time(),
                                 'response' => json_encode($respose)
                             ];
                             $res = Db::name('order')
