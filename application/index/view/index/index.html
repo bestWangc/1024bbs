@@ -15,9 +15,9 @@
 <div class="container-fluid">
     <div class="d-flex flex-row-reverse bg-light">
         <div class="p-2 bg-primary"></div>
-        <div class="p-2 bg-warning">新会员:afaffdsfad</div>
+        <div class="p-2 bg-warning">新会员 : {$lastUser}</div>
         <div class="p-2 bg-primary">|</div>
-        <div class="p-2 bg-warning">当前：游客</div>
+        <div class="p-2 bg-warning">当前：{$isLogin? '会员' : '游客'}</div>
         <div class="p-2 bg-primary">|</div>
         <div class="p-2 bg-warning flex-grow-1"></div>
     </div>

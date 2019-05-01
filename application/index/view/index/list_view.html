@@ -37,13 +37,10 @@ $(function () {
             field:"title",
             title:"文章",
             halign:"center",
+            align:"center",
             formatter: function (value, row, index) {
                 return '<a href="/index/article/index?id='+row.id+'" class="text-muted">'+value+'</a>';
             }
-        }, {
-            field:"author",
-            title:"作者",
-            align:"center",
         }, {
             field:"create_time",
             title:"發表",

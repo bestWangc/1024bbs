@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Db;
 use think\facade\Request;
+use think\facade\Session;
 
 class Index extends Base
 {
@@ -10,7 +11,16 @@ class Index extends Base
     {
         $blockInfo = Block::getAllField();
         $blockInfo = array_chunk($blockInfo,4);
-        $this->assign('blockInfo',$blockInfo);
+        $isLogin = false;
+        if(Session::get('u_id')){
+            $isLogin = true;
+        }
+        $lastUser = Db::name('users')->order('id desc')->value('account');
+        $this->assign([
+            'blockInfo' => $blockInfo,
+            'isLogin' => $isLogin,
+            'lastUser' => $lastUser
+        ]);
         return $this->fetch();
     }
 
