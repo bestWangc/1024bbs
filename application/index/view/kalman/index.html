@@ -69,6 +69,18 @@
                 </div>
                 <button type="submit" class="btn btn-primary queryBtn">查询</button>
             </form>
+            <hr>
+            <form onsubmit="return false;">
+                <div class="form-group">
+                    <label for="sel7">输入需添加卡密的帐号:</label>
+                    <input type="text" class="form-control" id="sel7" >
+                </div>
+                <div class="form-group">
+                    <label for="sel8">输入卡密:</label>
+                    <input type="text" class="form-control" id="sel8" >
+                </div>
+                <button type="submit" class="btn btn-primary addkal">添加</button>
+            </form>
         </div>
     </div>
 </div>
@@ -140,7 +152,6 @@
                     queryPwd : queryPwd
                 },
                 success : function(res){
-                    console.log(res);
                     layer.closeAll('loading');
                     if(res.code == 0){
                         console.log(res.data.url);
@@ -172,6 +183,75 @@
                     }else{
                         layer.msg(res.msg,{time: 1500});
                     }
+                },
+                error : function(data){
+                    console.log(data);
+                }
+            });
+        });
+
+        $('.queryBtn').click(function () {
+            let query_pwd = $('#queryPwd').val();
+            if(query_pwd == ''){
+                layer.msg('请输入查询密码',{time: 1000});
+                return false;
+            }
+            layer.load(0, {
+                shade: [0.1,'#fff']
+            });
+            $.ajax({
+                url : '/index/kalman/getKalmanByQuery',
+                type : "POST",
+                dataType : "json",
+                cache : false,
+                data : {
+                    query : query_pwd
+                },
+                success : function(res){
+                    layer.closeAll('loading');
+                    if(res.code == 0){
+                        $('#sel5').html(res.data);
+                    }else{
+                        layer.msg(res.msg,{time: 1500});
+                    }
+                },
+                error : function(data){
+                    console.log(data);
+                }
+            });
+        });
+
+        $('.addkal').click(function () {
+            let account = $('#sel7').val();
+            let kal = $('#sel8').val();
+
+            if(account == ''){
+                layer.msg('帐号不能为空',{time: 1000});
+                return false;
+            }
+            if(kal == ''){
+                layer.msg('卡密不能为空',{time: 1000});
+                return false;
+            }
+            layer.load(0, {
+                shade: [0.1,'#fff']
+            });
+            $.ajax({
+                url : '/index/kalman/addKalForUser',
+                type : "POST",
+                dataType : "json",
+                cache : false,
+                data : {
+                    account : account,
+                    kal_str : kal
+                },
+                success : function(res){
+                    console.log(res);
+                    /*if(res.code == 0){
+                        $('#sel3').val(res.data);
+                    }else{
+                        layer.msg(res.msg,{time: 1500});
+                    }*/
                 },
                 error : function(data){
                     console.log(data);

@@ -22,8 +22,11 @@ class Torrent extends Base
         }
 
         if(empty($kalman)){
-            $vipDayLine = Session::get('user_vip');
-            if($vipDayLine == 0) return jsonRes(102,'vip 时间已过，请重新获取卡密');
+            $userId = Session::get('u_id');
+            $vipDayLine = Db::name('users')->where('id',$userId)->value('vip_dayline');
+            if($vipDayLine > 0 && $vipDayLine < time()){
+                return jsonRes(102,'vip 时间已过，请重新获取卡密');
+            }
         }
 
         $info = Db::name('torrent')
