@@ -117,4 +117,5 @@ try:
 except:
     traceback.print_exc()
 finally:
+    browser.quit();
     browser.close()#关闭谷歌浏览器
