@@ -32,10 +32,7 @@ class Torrent extends Base
         $info = Db::name('torrent')
             ->where('article_id',$articleId)
             ->value('content');
-        $info = str_replace('[','',$info);
-        $info = str_replace(']','',$info);
-        $info = str_replace('"','',$info);
-        $info = explode(',',$info);
+        $info = explode('=*=',$info);
         foreach ($info as &$item) {
             $item = trim($item);
         }
