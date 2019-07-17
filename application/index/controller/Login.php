@@ -56,7 +56,7 @@ class Login extends Base
         if(empty($userName) || empty($userPwd) || empty($email)){
             return jsonRes(1,'信息填写不全，请重试');
         }
-        if(empty($kalman)) return jsonRes(1,'卡密不能为空');
+        // if(empty($kalman)) return jsonRes(1,'卡密不能为空');
 
         $oldUserInfo = Db::name('users')
             ->where('account',$userName)
@@ -64,11 +64,14 @@ class Login extends Base
 
         if(!!$oldUserInfo) return jsonRes(1,'帐号已存在，请重新填写');
 
-        $checkKalman = Db::name('kalman')
-            ->where('kalman',$kalman)
-            ->where('status',1)
-            ->value('day');
-        if(empty($checkKalman)) return jsonRes(1,'卡密不存在或者已过期');
+        $checkKalman = strtotime("+30 day");
+        if(!empty($kalman)){
+            $checkKalman = Db::name('kalman')
+                ->where('kalman',$kalman)
+                ->where('status',1)
+                ->value('day');
+            if(empty($checkKalman)) return jsonRes(1,'卡密不存在或者已过期');
+        }
 
         $data = [
             'account' => $userName,
